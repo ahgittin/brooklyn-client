@@ -37,7 +37,7 @@ type configDefaults struct {
 var appConfig = configDefaults{
 	Name:     os.Args[0],
 	HelpName: os.Args[0],
-	Usage:    "A Brooklyn command line client application",
+	Usage:    "CLI client for working with Apache Brooklyn servers",
 	Version:  "0.10.0-SNAPSHOT",  // BROOKLYN_VERSION
 }
 
@@ -58,7 +58,7 @@ func NewApp(baseName string, cmdRunner command_runner.Runner, metadatas ...comma
 		},
 		cli.StringFlag{
 			Name:  "json, j",
-			Usage: "Render value as json with json path selector as described at https://github.com/NodePrime/jsonpath. (Experimental, not supported on all commands at present) ",
+			Usage: "Render value as JSON with JSON path `SELECTOR` as described at https://github.com/NodePrime/jsonpath (experimental, not supported on all commands at present)",
 		},
 	}
 
@@ -124,14 +124,13 @@ func appHelpTemplate() string {
    {{.Name}} - {{.Usage}}
 USAGE:
    {{.Name}} {{if .Flags}}[global options] {{end}}command{{if .Flags}} [command options]{{end}} [arguments...]
-
+{{if or .Author .Email}}
 VERSION:
-   {{.Version}}{{if or .Author .Email}}
+   {{.Version}}
 
 AUTHOR:{{if .Author}}
   {{.Author}}{{if .Email}} - <{{.Email}}>{{end}}{{else}}
   {{.Email}}{{end}}{{end}}
-
 
 SCOPES:
    Many commands require a "scope" expression to indicate the target on which they operate. The scope expressions are
@@ -141,7 +140,6 @@ SCOPES:
    - effector    EFF-ID   (eff, f) Selects an effector of an entity or application, e.g. "br a myapp e myserver eff xyz"
    - config      CONF-KEY (conf, con, c) Selects a configuration key of an entity e.g. "br a myapp e myserver config jmx.agent.mode"
    - activity    ACT-ID   (act, v) Selects an activity of an entity e.g. "br a myapp e myserver act iHG7sq1"
-
 
 COMMANDS:
 
